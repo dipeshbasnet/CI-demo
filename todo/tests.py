@@ -9,7 +9,7 @@ class ToDoListViewTests(TestCase):
         self.assertTemplateUsed(response, "todo/index.html")
 
     def test_list_list_view_displays_lists(self):
-        # Create a ToDoList instance for testing
+        # Create a ToDoList instance for testing the app
         ToDoList.objects.create(title="Test List")
 
         response = self.client.get(reverse("index"))
