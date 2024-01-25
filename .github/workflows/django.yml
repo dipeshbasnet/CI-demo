@@ -52,6 +52,8 @@ jobs:
             TARGET: ${{ secrets.TARGET_DIR }}
           echo "Pushed to the server"
 
+      - name: Restart the server
+          if: needs.build.outputs['test_result'] == '0'  # Only deploy if all tests pass
           echo "Executing remote ssh commands using ssh key"
           uses: appleboy/ssh-action@master
           with:
