@@ -43,27 +43,27 @@ jobs:
       - name: Deploy To Server
         if: needs.build.outputs['test_result'] == '0'
         run: |
-          uses: easingthemes/ssh-deploy@main
-          with:
-            ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
-            remote-host: ${{ secrets.HOST_DNS }}
-            remote-user: ${{ secrets.USERNAME }}
-            target-dir: ${{ secrets.TARGET_DIR }}
+        uses: easingthemes/ssh-deploy@main
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+          remote-host: ${{ secrets.HOST_DNS }}
+          remote-user: ${{ secrets.USERNAME }}
+          target-dir: ${{ secrets.TARGET_DIR }}
 
       - name: Restart the server
         if: needs.build.outputs['test_result'] == '0'
         run: |
-          echo "Executing remote ssh commands using ssh key"
-          uses: appleboy/ssh-action@v0
-          with:
-            host: ${{ secrets.HOST_DNS }}
-            username: ${{ secrets.USERNAME }}
-            key: ${{ secrets.EC2_SSH_KEY }}
-            script: |
-              source env/bin/activate
-              cd app
-              python manage.py collectstatic
-              echo "Restarting services"
-              sudo systemctl reload nginx
-              circusctl reload
-              echo "Deployment Complete!"
+        echo "Executing remote ssh commands using ssh key"
+        uses: appleboy/ssh-action@v0
+        with:
+          host: ${{ secrets.HOST_DNS }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            source env/bin/activate
+            cd app
+            python manage.py collectstatic
+            echo "Restarting services"
+            sudo systemctl reload nginx
+            circusctl reload
+            echo "Deployment Complete!"
