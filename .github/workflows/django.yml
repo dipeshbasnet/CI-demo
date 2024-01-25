@@ -50,10 +50,10 @@ jobs:
 
         echo "Connecting to the server"
         echo "Deploying to the server"
-        echo "SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY"
-        echo "REMOTE_HOST: $REMOTE_HOST"
-        echo "REMOTE_USER: $REMOTE_USER"
-        echo "TARGET: $TARGET"
+        echo "SSH_PRIVATE_KEY: ${{ secrets.USERNAME }}
+        echo "REMOTE_HOST: ${{ secrets.USERNAME }}"
+        echo "REMOTE_USER: ${{ secrets.USERNAME }}"
+        echo "TARGET: ${{ secrets.USERNAME }}"
         
         uses: easingthemes/ssh-deploy@main
         env:
