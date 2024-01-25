@@ -51,7 +51,7 @@ jobs:
 
       - name: Restart the server
         if: needs.build.outputs['test_result'] == '0'
-        uses: appleboy/ssh-action@v0
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
