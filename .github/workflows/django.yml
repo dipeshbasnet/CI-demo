@@ -27,4 +27,13 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
-        python manage.py test
+        test_result=$(python manage.py test)
+        echo "$test_result"  # Print the test results
+        echo "::set-output name=test_result::$test_result"  # Set the test result as an output variable
+
+    - name: Deploy To Server
+      if: steps.test.outputs.test_result == '0'  # Only deploy if all tests pass
+      run: |
+        echo "Deploying to the server"
+        # Additional deployment steps...
+        echo "Deployment completed"
