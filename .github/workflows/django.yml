@@ -50,6 +50,11 @@ jobs:
 
         echo "Connecting to the server"
         uses: easingthemes/ssh-deploy@main
+        echo "Deploying to the server"
+        echo "SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY"
+        echo "REMOTE_HOST: $REMOTE_HOST"
+        echo "REMOTE_USER: $REMOTE_USER"
+        echo "TARGET: $TARGET"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
