@@ -2,18 +2,17 @@ name: Django CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [ 3.9 ]
+        python-version: [3.9]
 
     steps:
       - name: Checkout code
@@ -37,25 +36,26 @@ jobs:
           echo "::set-output name=test_result::$test_result"  # Set the test result as an output variable
 
   deploy:
-    needs: build  # Specify that the deploy job depends on the success of the build job
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
       - name: Deploy To Server
-        if: needs.build.outputs['test_result'] == '0'  # Only deploy if all tests pass
+        if: needs.build.outputs['test_result'] == '0'
         run: |
-          uses: easingthemes/ssh-deploy@main
-          env:
-            SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-            REMOTE_HOST: ${{ secrets.HOST_DNS }}
-            REMOTE_USER: ${{ secrets.USERNAME }}
-            TARGET: ${{ secrets.TARGET_DIR }}
           echo "Pushed to the server"
+          uses: easingthemes/ssh-deploy@v2
+          with:
+            ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+            remote-host: ${{ secrets.HOST_DNS }}
+            remote-user: ${{ secrets.USERNAME }}
+            target-dir: ${{ secrets.TARGET_DIR }}
 
       - name: Restart the server
-          if: needs.build.outputs['test_result'] == '0'  # Only deploy if all tests pass
+        if: needs.build.outputs['test_result'] == '0'
+        run: |
           echo "Executing remote ssh commands using ssh key"
-          uses: appleboy/ssh-action@master
+          uses: appleboy/ssh-action@v0
           with:
             host: ${{ secrets.HOST_DNS }}
             username: ${{ secrets.USERNAME }}
