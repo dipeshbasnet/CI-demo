@@ -65,8 +65,8 @@ jobs:
             cd app
             python manage.py collectstatic --no-input
             python manage.py migrate
-            deactivate
             echo "Restarting services"
             sudo systemctl reload nginx
             circusctl reload
+            deactivate
             echo "Deployment Complete!"
