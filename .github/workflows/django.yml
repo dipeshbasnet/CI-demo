@@ -44,10 +44,10 @@ jobs:
         if: needs.build.outputs['test_result'] == '0'
         uses: easingthemes/ssh-deploy@main
         with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
-          remote-host: ${{ secrets.HOST_DNS }}
-          remote-user: ${{ secrets.USERNAME }}
-          target-dir: ${{ secrets.TARGET_DIR }}
+          SSH-PRIVATE-KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.HOST_DNS }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          TARGET: ${{ secrets.TARGET_DIR }}
 
       - name: Restart the server
         if: needs.build.outputs['test_result'] == '0'
