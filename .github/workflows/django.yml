@@ -57,11 +57,15 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            source env/bin/activate
             cd repo.git
-            git pull
+            echo "Pulling git..."
+            git pull origin main
             cd ..
+            source env/bin/activate
             cd app
+            python manage.py collectstatic --no-input
+            python manage.py migrate
+            deactivate
             echo "Restarting services"
             sudo systemctl reload nginx
             circusctl reload
