@@ -40,16 +40,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy To Server
-        if: needs.build.outputs['test_result'] == '0'
-        uses: easingthemes/ssh-deploy@main
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.HOST_DNS }}
-          REMOTE_USER: ${{ secrets.USER }}
-          TARGET: ${{ secrets.TARGET_DIR }}
+#      - name: Deploy To Server
+#        if: needs.build.outputs['test_result'] == '0'
+#        uses: easingthemes/ssh-deploy@main
+#        with:
+#          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+#          REMOTE_HOST: ${{ secrets.HOST_DNS }}
+#          REMOTE_USER: ${{ secrets.USER }}
+#          TARGET: ${{ secrets.TARGET_DIR }}
 
-      - name: Restart the server
+      - name: Deploy to server
         if: needs.build.outputs['test_result'] == '0'
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -58,8 +58,10 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             source env/bin/activate
+            cd repo.git
+            git pull
+            cd ..
             cd app
-            python manage.py collectstatic
             echo "Restarting services"
             sudo systemctl reload nginx
             circusctl reload
