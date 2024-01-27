@@ -41,3 +41,6 @@ class ToDoItemViewTests(TestCase):
             reverse("item-delete", args=[self.todo_list.id, self.todo_item.id])
         )
         self.assertRedirects(response, reverse("list", args=[self.todo_list.id]))
+
+
+#staticIP: 3.86.10.220
