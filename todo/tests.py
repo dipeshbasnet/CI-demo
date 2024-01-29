@@ -33,7 +33,8 @@ class ToDoItemViewTests(TestCase):
 
     def test_item_list_view_displays_items(self):
         response = self.client.get(reverse("list", args=[self.todo_list.id]))
-        self.assertEqual(response.status_code, 200)
+        # 200 is the correct response code for this!!
+        self.assertEqual(response.status_code, 400)
         self.assertContains(response, "Test Item")
 
     def test_item_delete_view_success(self):
@@ -41,6 +42,3 @@ class ToDoItemViewTests(TestCase):
             reverse("item-delete", args=[self.todo_list.id, self.todo_item.id])
         )
         self.assertRedirects(response, reverse("list", args=[self.todo_list.id]))
-
-
-#staticIP: 3.86.10.220
