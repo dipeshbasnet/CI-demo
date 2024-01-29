@@ -34,7 +34,7 @@ class ToDoItemViewTests(TestCase):
     def test_item_list_view_displays_items(self):
         response = self.client.get(reverse("list", args=[self.todo_list.id]))
         # 200 is the correct response code for this!!
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Test Item")
 
     def test_item_delete_view_success(self):
